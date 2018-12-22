@@ -20,7 +20,7 @@ public class Player extends GameObject {
 		}
 	
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 32, 32);
+		return new Rectangle((int)x, (int)y, 32, 32);
 	}
 	
 	public void tick() {
@@ -28,9 +28,9 @@ public class Player extends GameObject {
 		y+=velY;
 		
 		x=Game.clamp(x, 0, Game.WIDTH-32);
-		y=Game.clamp(y, 0, Game.HEIGHT-72);
+		y=Game.clamp(y, 0, Game.HEIGHT-16);
 		
-		handler.addObject(new Trail(x, y, ID.Player, Color.white, 32, 32, 0.02f, handler));
+		handler.addObject(new Trail((int)x, (int)y, ID.Player, Color.white, 32, 32, 0.02f, handler));
 		
 		collision();
 	}
@@ -40,11 +40,12 @@ public class Player extends GameObject {
 		for ( int i=0;i<handler.object.size();i++) {
 			GameObject tempObject=handler.object.get(i);
 			
-			if(tempObject.getId()==ID.BasicEnemy||tempObject.getId()==ID.FastEnemy) {
+			if(tempObject.getId()==ID.BasicEnemy||tempObject.getId()==ID.FastEnemy||tempObject.getId()==ID.SmartEnemy||
+					tempObject.getId()==ID.EnemyBoss||tempObject.getId()==ID.EnemyBossBullet	) {
 				if(getBounds().intersects(tempObject.getBounds())){
 					HUD.HEALTH-=2;
-					tempObject.setVelX(tempObject.getVelX()*(-1));
-					tempObject.setVelY(tempObject.getVelY()*(-1));
+					//tempObject.setVelX((float)tempObject.getVelX()*(-1));
+					//tempObject.setVelY((float)tempObject.getVelY()*(-1));
 				}
 				
 			}
@@ -55,7 +56,7 @@ public class Player extends GameObject {
 	public void render(Graphics g) {
 		if(id==ID.Player)g.setColor(Color.white);
 		//else if(id ==id.Player2)g.setColor(Color.pink);
-		g.fillRect(x, y, 32, 32);
+		g.fillRect((int)x, (int)y, 32, 32);
 	}
 	
 	

@@ -22,7 +22,7 @@ public class BasciEnemy extends GameObject{
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 16, 16);
+		return new Rectangle((int)x, (int)y, 16, 16);
 	}
 	
 	
@@ -33,7 +33,7 @@ public class BasciEnemy extends GameObject{
 		if(this.y<=0||this.y>=Game.HEIGHT-48)velY*=-1;
 		if(this.x<=0||this.x>=Game.WIDTH-16)velX*=-1;
 	
-		handler.addObject(new Trail(x, y, ID.Trail,Color.red, 16,16,0.05f, handler));
+		handler.addObject(new Trail((int)x, (int)y, ID.Trail,Color.red, 16,16,0.05f, handler));
 		
 	}
 
@@ -42,7 +42,7 @@ public class BasciEnemy extends GameObject{
 		// TODO Auto-generated method stub
 		
 			g.setColor(Color.red);
-		g.fillRect(x, y, 16, 16);
+		g.fillRect((int)x, (int)y, 16, 16);
 	}
 	
 }

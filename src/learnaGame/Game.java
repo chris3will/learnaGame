@@ -32,6 +32,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public Game() {
 		//更多的是作为一个初始化
+		//#7中添加了算法，避免人类躲避，有一个可以实现主动追踪
 		handler=new Handler();
 		
 		this.addKeyListener(new KeyInput(handler));
@@ -47,7 +48,12 @@ public class Game extends Canvas implements Runnable {
 		r=new Random();
 		
 		handler.addObject(new Player(WIDTH/2, HEIGHT/2-32, ID.Player,handler));
-		handler.addObject(new BasciEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
+		
+		
+		
+		
+		
+		handler.addObject(new BasciEnemy((Game.WIDTH/2)-48, -120, ID.BasicEnemy, handler));
 			
 		
 	}
@@ -99,7 +105,7 @@ public class Game extends Canvas implements Runnable {
 			
 			if(System.currentTimeMillis()-timer>1000) {
 				timer+=1000;
-				System.out.println("FPS: "+frames);
+				//System.out.println("FPS: "+frames);
 				frames=0;
 			}
 		}
@@ -132,7 +138,7 @@ public class Game extends Canvas implements Runnable {
 		
 	}
 	
-	public static int clamp(int var,int min,int max) {//检测碰撞，并限制图像在缓冲区内的位置
+	public static float clamp(float var,float min,float max) {//检测碰撞，并限制图像在缓冲区内的位置
 		if(var >= max)
 		{
 			System.out.println(var=max);
