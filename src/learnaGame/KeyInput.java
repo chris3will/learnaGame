@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class KeyInput extends KeyAdapter{
-	
+	//获取按键响应，并匹配对应操作
 	private Handler handler;
 	private boolean[] keyDown= new boolean[4];//来确定是否有持续的按键，然后解决卡顿问题
 	

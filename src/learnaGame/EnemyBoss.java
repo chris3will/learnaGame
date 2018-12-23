@@ -52,7 +52,7 @@ public class EnemyBoss extends GameObject{
 			
 			velX=Game.clamp(velX, -10, 10);
 			
-			int spawn =r.nextInt(19);
+			int spawn =r.nextInt(9);
 			if(spawn==0) handler.addObject(new EnemyBossBullet((int)x+48, (int)y+48, id.EnemyBossBullet, handler));
 			
 			

@@ -28,33 +28,53 @@ public class Game extends Canvas implements Runnable {
 	private HUD hud;
 	
 	private Spawn spawner;
+	private Menu menu;
+	
+	public enum STATE{
+		Menu,
+		Help,
+		Game,
+		End
+	};
+	
+	public static STATE gameState=STATE.Menu;
+	
 	
 	
 	public Game() {
 		//更多的是作为一个初始化
 		//#7中添加了算法，避免人类躲避，有一个可以实现主动追踪
-		handler=new Handler();
+		//#9增加鼠标显示和菜单页面
 		
-		this.addKeyListener(new KeyInput(handler));
+		handler=new Handler();
+		hud= new HUD();
+		menu=new Menu(this,handler,hud);
+		
+		r=new Random();
+		
+		this.addMouseListener(menu);
+		this.addKeyListener(new KeyInput(handler));//监听键盘的行为
+		
 		
 		
 		//游戏主体窗口
 		new Window(WIDTH,HEIGHT,"let's build a game", this);
 	
-		hud= new HUD();
-		
 		spawner=new Spawn(handler, hud);
 		
-		r=new Random();
-		
-		handler.addObject(new Player(WIDTH/2, HEIGHT/2-32, ID.Player,handler));
 		
 		
-		
-		
-		
-		handler.addObject(new BasciEnemy((Game.WIDTH/2)-48, -120, ID.BasicEnemy, handler));
+		if(gameState==STATE.Game)
+		{
 			
+			handler.addObject(new Player(WIDTH/2, HEIGHT/2-32, ID.Player,handler));
+			handler.addObject(new BasciEnemy((Game.WIDTH/2)-48, 120, ID.BasicEnemy, handler));
+		}else {
+			/*for(int i=0;i<10;i++) {
+				handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MenuParticle, handler));
+			}*/
+		}
+		
 		
 	}
 	
@@ -97,9 +117,11 @@ public class Game extends Canvas implements Runnable {
 				//大TICK
 				delta--;
 			}
-			if(running)
+			if(running) {
 				render();
 				//大RENDER
+			}
+				
 			frames++;
 			
 			
@@ -114,9 +136,34 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick()
 	{
+		
+		
+		if(gameState==STATE.Game)
+		{
+			hud.tick();
+			spawner.tick();
+			
+			if(hud.HEALTH<=0) {
+				hud.HEALTH=100;
+				gameState=STATE.End;
+				handler.clearEnemys();
+				
+				
+				
+				
+				
+				/*for(int i=0;i<10;i++) {
+					handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MenuParticle, handler));
+				} */
+				
+			}
+		}else if(gameState==STATE.Menu||gameState==STATE.End) {
+			menu.tick();
+		}
 		handler.tick();
-		hud.tick();
-		spawner.tick();
+		
+		
+		
 	}
 	
 	private void render() {
@@ -132,7 +179,17 @@ public class Game extends Canvas implements Runnable {
 		
 		
 		handler.render(g);
-		hud.render(g);
+		
+		if(gameState==STATE.Game)
+		{
+			hud.render(g);
+			
+		}else if(gameState==STATE.Menu||gameState==STATE.Help||gameState==STATE.End) {
+			menu.render(g);
+
+		}
+		
+		
 		g.dispose();
 		bs.show();	
 		
@@ -141,11 +198,11 @@ public class Game extends Canvas implements Runnable {
 	public static float clamp(float var,float min,float max) {//检测碰撞，并限制图像在缓冲区内的位置
 		if(var >= max)
 		{
-			System.out.println(var=max);
+			//System.out.println(var=max);
 			return var=max;
 		}
 		else if(var <= min) {
-			System.out.println(var=min);
+			//System.out.println(var=min);
 			return var=min;
 		}
 		else {

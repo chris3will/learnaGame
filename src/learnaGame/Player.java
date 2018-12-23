@@ -6,6 +6,8 @@ import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import learnaGame.Game.STATE;
+
 public class Player extends GameObject {
 	
 
@@ -28,7 +30,7 @@ public class Player extends GameObject {
 		y+=velY;
 		
 		x=Game.clamp(x, 0, Game.WIDTH-32);
-		y=Game.clamp(y, 0, Game.HEIGHT-16);
+		y=Game.clamp(y, 0, Game.HEIGHT-64);
 		
 		handler.addObject(new Trail((int)x, (int)y, ID.Player, Color.white, 32, 32, 0.02f, handler));
 		
@@ -44,6 +46,9 @@ public class Player extends GameObject {
 					tempObject.getId()==ID.EnemyBoss||tempObject.getId()==ID.EnemyBossBullet	) {
 				if(getBounds().intersects(tempObject.getBounds())){
 					HUD.HEALTH-=2;
+					if(HUD.HEALTH <=0) {
+						
+					}
 					//tempObject.setVelX((float)tempObject.getVelX()*(-1));
 					//tempObject.setVelY((float)tempObject.getVelY()*(-1));
 				}
